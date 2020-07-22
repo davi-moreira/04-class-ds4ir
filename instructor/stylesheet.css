@@ -1,0 +1,120 @@
+/* Style sheet for Reveal.js Presentations
+Author: Vincent Bauer (edited by Davi Moreira and Rafael Magalhães - July 12, 2020)
+Date: 3/25/2016
+*/
+
+/* Title slide */
+.slide-background:first-child {
+/*  text-align: center; /* center align */
+  background-color: #deedfa;
+}
+
+/* Fonts */
+.reveal {/*Body*/  
+  font-family: "Verdana"; 
+}
+
+
+/* R code */
+
+.reveal code {
+/*	background-color: #ecebed;	/* code bg color*/
+  	font-family: "Courier New";
+}
+
+.reveal p code {
+	background-color: #ecebed;	/* code bg color*/
+  	font-family: "Courier New";
+}
+
+/* R code, avoiding scrolling bars*/
+.reveal pre code { /* code boxes */
+  /*margin-left:2em; /*identation*/
+	/*word-wrap: normal; /* wrap code */
+	/*overflow: visible; /* wrap code */
+	/*text-indent: 1em;*/
+    white-space: pre-line; /* wrap code */
+  /*/*	background-color: #ecebed;	/* code output bg color*/
+  	width: 930px;  /* larger box */
+  	font-family: "Courier New";
+    font-size: 85%;
+}
+
+.reveal pre  { /* code section */
+	/* margin-left: 0;  left align code section */
+	width: 925px; /* larger box */
+	font-family: "Courier New";
+	font-size: 85%;
+}
+
+/* Headings */
+.reveal h1 { /* Heading 1 */
+	font-family: "Verdana";
+	font-weight: bold; /* bold */
+	color: #1e4e78;
+}
+
+.reveal .slides h2 { /* Same color for author and slide headings*/
+	font-family: "Verdana";
+	color: #2f3a63; 
+}
+
+.reveal h3.date { /* Heading for date */
+	font-family: "Verdana";
+	color: #7e878f;
+}
+
+/* Links */
+.reveal a:not(.image) {
+  color: #d37827;
+  text-decoration: none;
+  -webkit-transition: color .15s ease;
+  -moz-transition: color .15s ease;
+  -ms-transition: color .15s ease;
+  -o-transition: color .15s ease;
+  transition: color .15s ease; 
+}
+
+.reveal a:not(.image):hover {
+  color: #b46621;
+  text-shadow: none;
+  border: none; 
+}
+
+/* Images */
+.reveal section img{ /* images */
+  border: 0; /* no border but still shadow */
+}
+
+/* Progress bar */
+.reveal .progress span {
+  background: #234f75;
+}
+
+/* Custom text - <span class="red">Pay attention to this!</span> */
+.red {
+   color: red;
+}
+
+.green {
+   color: green;
+}
+
+/* Slide content area */
+/* these need to be at the bottom, do NOT move them */
+
+.reveal .slides { /* all slide content */
+  text-align: left; /* left align */
+  font-size: 80%; /* smaller text */
+}
+
+.reveal .slides section>* { /* this is for left align */
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Centering slides with figures - ## Figure Slide {#figure} */
+#figure {
+  text-align: center;
+}
+  

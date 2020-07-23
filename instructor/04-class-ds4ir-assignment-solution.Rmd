@@ -139,7 +139,16 @@ class_profile %>% select(idade) %>%
 
 ```
 
+- Possibilidade 7:
 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+class_profile %>% select(idade) %>%
+ggplot(aes(x=1, idade)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(y = "idade", x = "")
+
+```
 
 <center>
 ![2.](images/escolaridade.png){width=700px}

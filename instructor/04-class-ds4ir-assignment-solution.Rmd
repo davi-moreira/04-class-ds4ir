@@ -24,16 +24,11 @@ Nele, você deve realizar a seguinte tarefa:
 
 # Aprimore a visualização gráfica gerada automaticamente pelo google form para cada uma das imagens abaixo:
 
-- use a base de dados de `perfil-turma.csv`.
+- use a base de dados de `perfil-alunos.csv`.
 - se necessário, aplique o conhecimento adquirido até aqui.
 - sua resposta deve estar abaixo de cada imagem e seu código deve ser apresentado
 
-<center>
-![1.](images/idade.png){width=700px}
-</center>
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-# preparando dados
 class_profile <- read_csv(here("data", "perfil-turma.csv"))
 
 # ajustando nomes de variaveis
@@ -42,7 +37,11 @@ newnames <- c("idade", "escolaridade", "ocupacao", "area")
 
 class_profile <- class_profile %>% rename_at(vars(oldnames), ~ newnames)
 ```
-  
+
+<center>
+![1.](images/idade.png){width=700px}
+</center>
+
 - Possibilidade 1:
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
@@ -106,11 +105,14 @@ class_profile %>% select(idade) %>%
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 class_profile %>% select(idade) %>% 
   mutate(idade_fx = case_when(idade <= 20 ~ "Menor que 21",
-                              idade >= 20 & idade < 30 ~ "De 21 a 30",
-                              idade >= 30 & idade < 40 ~ "De 31 a 40",
+                              idade > 20 & idade <= 30 ~ "De 21 a 30",
+                              idade > 30 & idade <= 40 ~ "De 31 a 40",
                               TRUE ~ "Acima de 40")) %>%
   group_by(idade_fx) %>% summarise(n = n()) %>%
-  mutate(idade_fx = factor(idade_fx, levels = c("Menor que 21", "De 21 a 30", "De 31 a 40", "Acima de 40"))) %>%
+  mutate(idade_fx = factor(idade_fx, levels = c("Menor que 21", 
+                                                "De 21 a 30", 
+                                                "De 31 a 40", 
+                                                "Acima de 40"))) %>%
   ggplot(aes(idade_fx, n)) + 
   geom_bar(stat = "identity") +
   theme_bw() + 
@@ -125,13 +127,16 @@ class_profile %>% select(idade) %>%
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 class_profile %>% select(idade) %>% 
   mutate(idade_fx = case_when(idade <= 20 ~ "Menor que 21",
-                              idade >= 20 & idade < 30 ~ "De 21 a 30",
-                              idade >= 30 & idade < 40 ~ "De 31 a 40",
+                              idade > 20 & idade <= 30 ~ "De 21 a 30",
+                              idade > 30 & idade <= 40 ~ "De 31 a 40",
                               TRUE ~ "Acima de 40")) %>%
-  mutate(idade_fx = factor(idade_fx, levels = c("Menor que 21", "De 21 a 30", "De 31 a 40", "Acima de 40"))) %>%
+  mutate(idade_fx = factor(idade_fx, levels = c("Menor que 21", 
+                                                "De 21 a 30", 
+                                                "De 31 a 40", 
+                                                "Acima de 40"))) %>%
   ggplot(aes(idade_fx)) + 
   geom_bar(aes(y = (..count..)/sum(..count..))) + 
-          scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels=scales::percent) +
   theme_bw() + 
   theme(legend.title = element_blank(),
         axis.title.x = element_blank(), 
@@ -143,9 +148,21 @@ class_profile %>% select(idade) %>%
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 class_profile %>% select(idade) %>%
-ggplot(aes(x=1, idade)) +
+ggplot(aes(x = 1, idade)) +
   geom_boxplot() +
   coord_flip() +
+  labs(y = "idade", x = "")
+
+```
+
+- Possibilidade 8:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+class_profile %>% select(idade) %>%
+ggplot(aes(x = 1, idade)) +
+  geom_boxplot() +
+  geom_jitter(alpha = .25) +
+#  coord_flip() +
   labs(y = "idade", x = "")
 
 ```
@@ -160,12 +177,14 @@ ggplot(aes(x=1, idade)) +
 n_resp <- class_profile %>% select(escolaridade) %>% drop_na() %>% count()
 
 class_profile %>% select(escolaridade) %>% 
-  mutate(escolaridade = factor(escolaridade, levels = c("Graduação", "Especialização", 
-                                                        "Mestrado", "Doutorado", 
+  mutate(escolaridade = factor(escolaridade, levels = c("Graduação",
+                                                        "Especialização", 
+                                                        "Mestrado", 
+                                                        "Doutorado", 
                                                         "Pós-doutorado"))) %>%
   ggplot(aes(escolaridade)) + 
   geom_bar(aes(y = (..count..)/sum(..count..))) + 
-          scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
   theme_bw() + 
   ggtitle(paste(n_resp, "responses", sep = " ")) +
   theme(legend.title = element_blank(),
@@ -179,10 +198,14 @@ class_profile %>% select(escolaridade) %>%
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 n_resp <- class_profile %>% select(escolaridade) %>% drop_na() %>% count()
 
-fct_ordem <- class_profile %>% count(escolaridade) %>% arrange(desc(n)) %>% select(escolaridade)
+fct_ordem <- class_profile %>% 
+              count(escolaridade) %>% 
+              arrange(desc(n)) %>% 
+              select(escolaridade)
 
 class_profile %>% select(escolaridade) %>% 
-  mutate(escolaridade = factor(escolaridade, levels = fct_ordem$escolaridade)) %>%
+  mutate(escolaridade = factor(escolaridade, 
+                               levels = fct_ordem$escolaridade)) %>%
   ggplot(aes(escolaridade)) + 
   geom_bar(aes(y = (..count..)/sum(..count..))) + 
           scale_y_continuous(labels=scales::percent) +
@@ -246,7 +269,6 @@ class_profile %>% select(ocupacao) %>%
 
 # Apresente abaixo uma sugestão para melhorar a coleta de dados através do formulário:
 
-- Especialmente melhorar a coleta referente à idade.
 
 # Produza um documento .html com o resultado de sua análise
 
